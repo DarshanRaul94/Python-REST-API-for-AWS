@@ -66,9 +66,6 @@ def deletebucket(bucketname):
 
 
 ######################################EC2 SECTION START###########################
-osdict={"Amazon_Linux":"ami-0937dcc711d38ef3f","Ubuntu":"ami-0d773a3b7bb2bb1c1","Red Hat Enterprise Linux 7.5":"ami-5b673c34"}
-userdatadict={"Docker":docker_script,"Nginx":nginx_script,"Jenkins":jenkins_script,"Elk":elk_script,"Mean":mean_script}
-
 docker_script ="""#!/bin/bash
 sudo apt update
 sudo apt install -y docker.io
@@ -103,15 +100,42 @@ sudo apt install -y docker-compose
 docker run -i -t -d -p 80:3000 maccam912/meanjs 
 """
 
+osdict={"Amazon_Linux":"ami-0937dcc711d38ef3f","Ubuntu":"ami-0d773a3b7bb2bb1c1","Red Hat Enterprise Linux 7.5":"ami-5b673c34"}
+userdatadict={"Docker":docker_script,"Nginx":nginx_script,"Jenkins":jenkins_script,"Elk":elk_script,"Mean":mean_script}
+
+
+
 @get('/instances/all')
 def getinstances():
-	serverlist=[]
+    serverlist=[]
     servers=ec2.describe_instances()
     for i in servers['Reservations']:
         for inst in i['Instances']:
             name="Instance Id=>" +str(inst['InstanceId'])
             serverlist.append(name)
-	return str(serverlist)
+    return str(serverlist)
+	
+@put('/instances/<os>/<instance_type>/<count>/<keyname>/<app>')
+def create_instance(os,instance_type,count,keyname,app):
+	ec2.run_instances( ImageId=str(osdict[str(os)]),
+        InstanceType=str(instance_type),MaxCount=int(count),
+        MinCount=int(count),KeyName=str(keyname),UserData=userdatadict[app])
+	return "instance ran successfully"
+
+
+@post('/instances/<action>/<instance_id>')
+def start_stop_instances(action,instance_id):
+	if action=='stop':
+		ec2.stop_instances(InstanceIds=[
+        str(instance_id)
+    ])
+		return "stopping instances"
+	elif action=='start':
+		ec2.start_instances(InstanceIds=[
+        str(instance_id)
+    ])
+		return "starting instances"
+	return "test"
 
 
 if __name__== '__main__':
