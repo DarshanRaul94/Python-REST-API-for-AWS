@@ -1,5 +1,5 @@
 from bottle import route, run,hook, response,request, Bottle
-from bottle.ext.mongo import MongoPlugin
+
 from bottle import post, get, put, delete, error
 import boto3
 import json
@@ -173,11 +173,10 @@ def getinstances():
             print(name)
             print(state)
             serverid="server"+str(count)
-            server={ "instance id":name,"state":state}
-            serverdict.update({serverid:server})
-            print(serverdict)
+            serverlist.append({ "instance id":name,"state":state})
+         
             
-    return {"servers":serverdict}
+    return {"servers":serverlist}
     
 @put('/instances')
 def create_instance():
@@ -217,7 +216,18 @@ def start_stop_instances():
 ###########################################IAM SECTION#####################################
 @get('/users/all')
 def get_users():
-	return str(iam.list_users())
+    userdict={}
+    count=0
+    users=iam.list_users()
+    userlist=[]
+    print(users)
+    for user in users['Users']:
+        count+=1
+        name=user['UserName']
+        userid="user"+str(count)
+        userlist.append({"Username":name})
+        
+    return {"users":userlist}
 
 
 
