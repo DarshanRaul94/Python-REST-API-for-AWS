@@ -1,9 +1,11 @@
-from bottle import route, run,hook, response
+from bottle import route, run,hook, response,request
 from bottle import post, get, put, delete
 import boto3
 import json
+import logging
 s3=boto3.client('s3')
 ec2 = boto3.client('ec2')
+iam = boto3.client('iam')
 
 ######################################CORS POLICY ERROR SOLUTION#######################################
 _allow_origin = '*'
@@ -37,26 +39,54 @@ def getbuckets():
         bucket= i['Name']
         bucketlist.append(bucket)
     
-    return  str(bucketlist)
+    return {"buckets":bucketlist}
 
 
-@get('/buckets/<bucketname>')
-def getobjects(bucketname):
-    objects=s3.list_objects(Bucket=str(bucketname))
-    return str(objects)
+@get('/objects')
+def getobjects():
+    bucketname=request.query.bucketname
+    objectlist=[]
+    objects=s3.list_objects_v2(Bucket=str(bucketname))
+    print(objects)
+    if(objects['KeyCount']!=0):
+            for object in objects['Contents']:
+                objectlist.append(object['Key'])
+        
+    
+    return {bucketname:objectlist}
+
+@get('/objects/all') ########################FACING ERRORS IN THIS ONE####
+def getallobjects():
+    buckets=s3.list_buckets()
+    bucketlist=[]
+    
+    objectdict={}
+    for i in buckets['Buckets']:
+        bucket= i['Name']
+        bucketlist.append(bucket)
+    for bucket in bucketlist:
+        objectlist=[]
+        objects=s3.list_objects(Bucket=str(bucket))
+        print(objects)
+        if(objects['KeyCount']!=0):
+            for object in objects['Contents']:
+                objectlist.append(object['Key'])
+        objectdict.update({bucket:objectlist})
+        
+    print(objectdict)
+    return str(objectdict)
 
 
-
-@post('/buckets/<bucketname>')
-def createbucket(bucketname):
-    s3.create_bucket(Bucket=str(bucketname), CreateBucketConfiguration={
-        'LocationConstraint': 'ap-south-1'
-    })
+@post('/buckets')
+def createbucket():
+    bucketname=request.query.bucketname
+    s3.create_bucket(Bucket=str(bucketname), CreateBucketConfiguration={'LocationConstraint': 'ap-south-1'})
     return "bucket created successfully"
     
 	
-@delete('/buckets/<bucketname>')
-def deletebucket(bucketname):
+@delete('/buckets')
+def deletebucket():
+	bucketname= request.query.bucketname
 	s3.delete_bucket(Bucket=str(bucketname))
 	return "bucket "+ bucketname + " deleted successfully"
 	
@@ -113,7 +143,7 @@ def getinstances():
         for inst in i['Instances']:
             name="Instance Id=>" +str(inst['InstanceId'])
             serverlist.append(name)
-    return str(serverlist)
+    return str(servers['Reservations'])
 	
 @put('/instances/<os>/<instance_type>/<count>/<keyname>/<app>')
 def create_instance(os,instance_type,count,keyname,app):
@@ -137,7 +167,20 @@ def start_stop_instances(action,instance_id):
 		return "starting instances"
 	return "test"
 
+##########################################EC2 SECTION END#############################
 
+
+
+###########################################IAM SECTION#####################################
+@get('/users/all')
+def get_users():
+	return str(iam.list_users())
+
+
+
+
+
+###########################################IAM SECTION ENDS###################################
 if __name__== '__main__':
     run( debug=True, reloader= True)
 
