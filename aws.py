@@ -229,9 +229,41 @@ def get_users():
         
     return {"users":userlist}
 
+@get('/groups/all')
+def get_groups():
+    
+    
+    groups=iam.list_groups()
+    grouplist=[]
+    
+    for group in groups['Groups']:
+        
+        name=group['GroupName']
+        
+        grouplist.append({"Name":name})
+        
+    return {"groups":grouplist}
 
+@get('/roles/all')
+def get_roles():
+    
+    
+    roles=iam.list_roles()
+    roleslist=[]
+    
+    for role in roles['Roles']:
+        
+        name=role['RoleName']
+        description=role['Description']
+        roleslist.append({"Name":name,"Description":description})
+        
+    return {"roles":roleslist}
 
-
+@post('/users')
+def create_user():
+    username=request.query.username
+    iam.create_user(UserName=str(username))
+    return "User "+username+" created"
 
 ###########################################IAM SECTION ENDS###################################
 if __name__== '__main__':
