@@ -1,5 +1,5 @@
 from bottle import route, run,hook, response,request
-from bottle import post, get, put, delete
+from bottle import post, get, put, delete, error
 import boto3
 import json
 import logging
@@ -29,6 +29,23 @@ def options_handler(path = None):
 ######################################CORS POLICY ERROR SOLUTION #######################################	
 
 
+
+#####################################ERROR CODE HANDLING SECTION####################################
+@error(404)
+def error404(error):
+    return '<h1> gharpe ja na shane<h1>'
+
+@error(405)
+def error405(error):
+    return '<h1> gharpe ja na shane <h1>'
+
+
+#####################################ERROR CODE HANDLING SECTION ####################################
+
+
+
+
+
 ######################################S3 SECTION##########################
 	
 @get('/buckets/all')
@@ -55,7 +72,10 @@ def getobjects():
     
     return {bucketname:objectlist}
 
-@get('/objects/all') ########################FACING ERRORS IN THIS ONE####
+
+
+########################FACING ERRORS IN THIS ONE####
+@get('/objects/all') 
 def getallobjects():
     buckets=s3.list_buckets()
     bucketlist=[]
@@ -64,17 +84,20 @@ def getallobjects():
     for i in buckets['Buckets']:
         bucket= i['Name']
         bucketlist.append(bucket)
-    for bucket in bucketlist:
-        objectlist=[]
-        objects=s3.list_objects(Bucket=str(bucket))
-        print(objects)
-        if(objects['KeyCount']!=0):
+        for bucket in bucketlist:
+            print(bucket)
+            objectlist=[]
+            objects=s3.list_objects(Bucket=str(bucket))
+            print(objects)
+
             for object in objects['Contents']:
                 objectlist.append(object['Key'])
-        objectdict.update({bucket:objectlist})
+            objectdict.update({bucket:objectlist})
         
-    print(objectdict)
-    return str(objectdict)
+
+    return objectdict
+
+########################FACING ERRORS IN THIS ONE####
 
 
 @post('/buckets')
