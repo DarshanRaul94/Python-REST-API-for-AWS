@@ -1,4 +1,5 @@
-from bottle import route, run,hook, response,request
+from bottle import route, run,hook, response,request, Bottle
+from bottle.ext.mongo import MongoPlugin
 from bottle import post, get, put, delete, error
 import boto3
 import json
@@ -160,35 +161,54 @@ userdatadict={"Docker":docker_script,"Nginx":nginx_script,"Jenkins":jenkins_scri
 
 @get('/instances/all')
 def getinstances():
+    serverdict={}
     serverlist=[]
+    count=0
     servers=ec2.describe_instances()
-    for i in servers['Reservations']:
-        for inst in i['Instances']:
-            name="Instance Id=>" +str(inst['InstanceId'])
-            serverlist.append(name)
-    return str(servers['Reservations'])
-	
-@put('/instances/<os>/<instance_type>/<count>/<keyname>/<app>')
-def create_instance(os,instance_type,count,keyname,app):
-	ec2.run_instances( ImageId=str(osdict[str(os)]),
+    for reservation in servers['Reservations']:
+        for inst in reservation['Instances']:
+            count+=1
+            name=inst['InstanceId']
+            state=inst['State']['Name']
+            print(name)
+            print(state)
+            serverid="server"+str(count)
+            server={ "instance id":name,"state":state}
+            serverdict.update({serverid:server})
+            print(serverdict)
+            
+    return {"servers":serverdict}
+    
+@put('/instances')
+def create_instance():
+    os=request.query.os
+    instance_type==request.query.instance_type
+    count=request.query.count
+    keyname=request.query.keyname
+    app=request.query.app
+        
+    response=ec2.run_instances( ImageId=str(osdict[str(os)]),
         InstanceType=str(instance_type),MaxCount=int(count),
         MinCount=int(count),KeyName=str(keyname),UserData=userdatadict[app])
-	return "instance ran successfully"
+    return "instance ran successfully"+response
 
 
-@post('/instances/<action>/<instance_id>')
-def start_stop_instances(action,instance_id):
-	if action=='stop':
-		ec2.stop_instances(InstanceIds=[
+@post('/instances')
+def start_stop_instances():
+    action=request.query.action
+    instance_id=request.query.instance_id
+        
+    if action=='stop':
+        ec2.stop_instances(InstanceIds=[
         str(instance_id)
     ])
-		return "stopping instances"
-	elif action=='start':
-		ec2.start_instances(InstanceIds=[
+        return "stopping instances"
+    elif action=='start':
+        ec2.start_instances(InstanceIds=[
         str(instance_id)
     ])
-		return "starting instances"
-	return "test"
+        return "starting instances"
+    return "test"
 
 ##########################################EC2 SECTION END#############################
 
