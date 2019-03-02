@@ -24,6 +24,9 @@ class Buckets(Resource):
 @api.route('/objects')
 class Objects(Resource):
     def get(self):
+        """
+        Get all the objects in all buckets
+        """
         buckets=s3.list_buckets()
         bucketlist=[]
     
@@ -47,17 +50,24 @@ class Objects(Resource):
 @api.route('/buckets/<string:bucket_name>')  
 class BucketsOps(Resource): 
     def post(self,bucket_name):
-        
+        """
+        Create a bucket
+        """
         s3.create_bucket(Bucket=str(bucket_name), CreateBucketConfiguration={'LocationConstraint': 'ap-south-1'})
         return "bucket created successfully"
     def delete(self,bucket_name):
+        """
+        Delete a bucket
+        """
         s3.delete_bucket(Bucket=str(bucket_name))
         return "bucket "+ bucket_name + " deleted successfully"
 
 @api.route('/objects/<string:bucket_name>')
 class ObjectsOps(Resource):
     def get(self,bucket_name):
-        
+        """
+        Get all the objects in given bucket
+        """
         objectlist=[]
         objects=s3.list_objects_v2(Bucket=str(bucket_name))
         print(objects)
