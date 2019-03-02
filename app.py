@@ -6,3 +6,5 @@ CORS(app)
 api.init_app(app)
 
 app.run(debug=True)
+#app.run(debug=True,ssl_context='adhoc' ) ######to make this https
+#pip install pyopenssl

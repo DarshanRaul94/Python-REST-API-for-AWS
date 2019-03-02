@@ -1,7 +1,7 @@
 from flask_restplus import Namespace, Resource, fields
 from flask import Flask, request
 api = Namespace('IAM', description='Api\'s to interact with AWS IAM')
-
+import os
 import boto3
 import json
 import logging
@@ -70,6 +70,14 @@ class GroupOps(Resource):
         """
         iam.create_group(GroupName=str(group_name))
         return "Group"+group_name+" created"
+    def get(self,group_name):
+        """
+        Get the group details
+        """
+        group_details=iam.get_group(
+         GroupName=str(group_name)
+        )
+        return {"group details":str(group_details)}
     def delete(self,group_name):
         """
         Delete an group in your account
@@ -106,6 +114,14 @@ class Roles(Resource):
             roleslist.append({"Name":name,"Description":description})
             
         return {"roles":roleslist}
-    
-    
-    
+
+
+##############test feature to later on add new profiles in the aws credentials file
+@api.route('/credentials')    
+class Credentials(Resource):
+    @api.doc(params={'os': 'Operating System'})
+    def post(self):
+        os = request.args.get("os")
+        with open("./hello", "a") as myfile:
+            myfile.write("appended text" + str(os))
+        return "Successful"
