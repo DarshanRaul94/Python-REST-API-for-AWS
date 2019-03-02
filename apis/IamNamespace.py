@@ -11,6 +11,9 @@ iam = boto3.client('iam')
 @api.route('/users')    
 class Users(Resource):
     def get(self):
+        """
+        Get all the Users in your account
+        """ 
         userdict={}
         count=0
         users=iam.list_users()
@@ -24,9 +27,30 @@ class Users(Resource):
             
         return {"users":userlist}
 
+@api.route('/users/<string:user_name>')        
+class UserOps(Resource):
+    def post(self,user_name):
+        """
+        Create an User in your account
+        """ 
+        iam.create_user(UserName=str(user_name))
+        return "User "+user_name+" created"
+
+    def delete(self,user_name):
+        """
+        Delete an User in your account
+        """
+        iam.delete_user(
+        UserName=str(user_name)
+        )
+        return "User "+user_name+" deleted"
+
 @api.route('/groups')    
 class Groups(Resource):
     def get(self):
+        """
+        Get all the groups in your account
+        """ 
         groups=iam.list_groups()
         grouplist=[]
         
@@ -38,9 +62,40 @@ class Groups(Resource):
             
         return {"groups":grouplist}
 
+@api.route('/groups/<string:group_name>')        
+class GroupOps(Resource):
+    def post(self,group_name):
+        """
+        Create a Group in your account
+        """
+        iam.create_group(GroupName=str(group_name))
+        return "Group"+group_name+" created"
+    def delete(self,group_name):
+        """
+        Delete an group in your account
+        """
+        iam.delete_group(
+        GroupName=str(group_name)
+        )
+        return "Group "+group_name+" deleted"
+@api.route('/groups/<string:group_name>/<string:user_name>')        
+class GroupsUsers(Resource):
+    def post(self,group_name,user_name):
+        """
+        Add an user to a Group 
+        """
+        iam.add_user_to_group(
+        GroupName=str(group_name),
+        UserName=str(user_name)
+        )
+        return "User"+user_name+"added to"+ "Group"+group_name
+
 @api.route('/roles')    
 class Roles(Resource):
     def get(self):
+        """
+        Get all the roles in your account
+        """
         roles=iam.list_roles()
         roleslist=[]
         

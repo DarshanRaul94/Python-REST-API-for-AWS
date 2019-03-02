@@ -93,6 +93,25 @@ class InstanceOps(Resource):
         ec2.terminate_instances(InstanceIds=[str(instance_id)])
         return "Server terminated"
 
+@api.route('/instances/<string:instance_id>/<string:running_state>')  
+class InstanceStartStop(Resource):     
+    def post(self,instance_id,running_state):
+        """
+        Start or Stop a server 
+        """
+        if(str(running_state)=="running"):
+            ec2.start_instances(InstanceIds=[
+            str(instance_id)
+            ])
+            return "Server Started"
+        elif(str(running_state)=="stopped"):
+            ec2.stop_instances(InstanceIds=[
+            str(instance_id)
+            ])
+            return "Server Stopped"
+
+        return "Invalid running state"
+
 @api.route('/keypairs')
 class Keypair(Resource):
     def get(self):
