@@ -15,7 +15,7 @@ CORS(app)
 api = Api(app)
 
 
-@api.route('/buckets')
+@api.route('/buckets')  
 class Buckets(Resource):
     def get(self):
         """
@@ -114,6 +114,54 @@ docker run -i -t -d -p 80:3000 maccam912/meanjs
 osdict={"Amazon_Linux":"ami-0937dcc711d38ef3f","Ubuntu":"ami-0d773a3b7bb2bb1c1","Red Hat Enterprise Linux 7.5":"ami-5b673c34"}
 userdatadict={"Docker":docker_script,"Nginx":nginx_script,"Jenkins":jenkins_script,"Elk":elk_script,"Mean":mean_script}
 
+@api.route('/instances')    
+class Instances(Resource):
+    def get(self):
+        """
+        Get all the instances
+        """
+        serverdict={}
+        serverlist=[]
+        count=0
+        servers=ec2.describe_instances()
+        for reservation in servers['Reservations']:
+            for inst in reservation['Instances']:
+                count+=1
+                name=inst['InstanceId']
+                state=inst['State']['Name']
+                print(name)
+                print(state)
+                serverid="server"+str(count)
+                serverlist.append({ "instance id":name,"state":state})
+         
+            
+        return {"servers":serverlist}
+    @api.doc(params={'os': 'Operating System','instance_type': 'Instance Type','count': 'No of Instances','keyname': 'Keypair Name','app': 'Application name'})
+    def post(self):
+        """
+        Create instance
+        """
+        os = request.args.get("os")
+        instance_type = request.args.get("instance_type")
+        count = request.args.get("count")
+        keyname = request.args.get("keyname")
+        app = request.args.get("app")
+        response=ec2.run_instances( ImageId=str(osdict[str(os)]),
+        InstanceType=str(instance_type),MaxCount=int(count),
+        MinCount=int(count),KeyName=str(keyname),UserData=userdatadict[app])
+        return "instance ran successfully"+os 
+            
+        
+@api.route('/instances/<string:instance_id>')
+
+class InstanceOps(Resource):
+    def delete(self,instance_id):
+        """
+        Terminate the instances
+        """
+        ec2.terminate_instances(InstanceIds=[str(instance_id)])
+        return "Server terminated"
+    
         
 if __name__ == '__main__':
     app.run(debug=True)
