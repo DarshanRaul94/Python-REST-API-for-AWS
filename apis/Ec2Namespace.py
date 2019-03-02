@@ -66,6 +66,7 @@ class Instances(Resource):
          
             
         return {"servers":serverlist}
+
     @api.doc(params={'os': 'Operating System','instance_type': 'Instance Type','count': 'No of Instances','keyname': 'Keypair Name','app': 'Application name'})
     def post(self):
         """
@@ -91,5 +92,18 @@ class InstanceOps(Resource):
         """
         ec2.terminate_instances(InstanceIds=[str(instance_id)])
         return "Server terminated"
-    
+
+@api.route('/keypairs')
+class Keypair(Resource):
+    def get(self):
+        """
+        Get all the keypairs in this region
+        """    
+        keypairdict={}
+        keypairlist=[]
+        keypairs=ec2.describe_key_pairs()
+        for keypair in keypairs['KeyPairs']:
+            keypairlist.append(keypair['KeyName'])
+        
+        return {"keypairs":keypairlist}
         
