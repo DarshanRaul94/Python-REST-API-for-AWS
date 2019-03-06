@@ -1,5 +1,6 @@
 from flask import Flask
 from apis_fire import api
+###from apis import api### use this for normal operations
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
