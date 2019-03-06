@@ -5,15 +5,19 @@ import os
 import boto3
 import json
 import logging
-iam = boto3.client('iam')
+from .firestore import db
+#iam = boto3.client('iam')
 
 
 @api.route('/users')    
 class Users(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def get(self):
         """
         Get all the Users in your account
         """ 
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         userdict={}
         count=0
         users=iam.list_users()
@@ -29,17 +33,22 @@ class Users(Resource):
 
 @api.route('/users/<string:user_name>')        
 class UserOps(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def post(self,user_name):
         """
         Create an User in your account
         """ 
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.create_user(UserName=str(user_name))
         return "User "+user_name+" created"
-
+    @api.doc(params={'profile': 'profile_name'})
     def delete(self,user_name):
         """
         Delete an User in your account
         """
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.delete_user(
         UserName=str(user_name)
         )
@@ -47,10 +56,13 @@ class UserOps(Resource):
 
 @api.route('/groups')    
 class Groups(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def get(self):
         """
         Get all the groups in your account
         """ 
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         groups=iam.list_groups()
         grouplist=[]
         
@@ -64,34 +76,46 @@ class Groups(Resource):
 
 @api.route('/groups/<string:group_name>')        
 class GroupOps(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def post(self,group_name):
         """
         Create a Group in your account
         """
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.create_group(GroupName=str(group_name))
         return "Group"+group_name+" created"
+    @api.doc(params={'profile': 'profile_name'})
     def get(self,group_name):
         """
         Get the group details
         """
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         group_details=iam.get_group(
          GroupName=str(group_name)
         )
         return {"group details":str(group_details)}
+    @api.doc(params={'profile': 'profile_name'})
     def delete(self,group_name):
         """
         Delete an group in your account
         """
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.delete_group(
         GroupName=str(group_name)
         )
         return "Group "+group_name+" deleted"
 @api.route('/groups/<string:group_name>/<string:user_name>')        
 class GroupsUsers(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def post(self,group_name,user_name):
         """
         Add an user to a Group 
         """
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.add_user_to_group(
         GroupName=str(group_name),
         UserName=str(user_name)
@@ -100,10 +124,13 @@ class GroupsUsers(Resource):
 
 @api.route('/roles')    
 class Roles(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def get(self):
         """
         Get all the roles in your account
         """
+        profile = request.args.get("profile")
+        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         roles=iam.list_roles()
         roleslist=[]
         

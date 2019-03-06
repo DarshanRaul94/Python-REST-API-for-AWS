@@ -9,7 +9,7 @@ import boto3
 import json
 import logging
 #s3=boto3.client('s3')
-users = db.child('profiles').child('madhavi').get()
+#users = db.child('profiles').child('madhavi').get()
 
 
 #s3=boto3.client('s3', region_name='ap-south-1', aws_access_key_id=str(users.val()['access_key']), aws_secret_access_key=str(users.val()['secret_access_key']))
