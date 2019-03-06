@@ -1,7 +1,7 @@
 from flask_restplus import Namespace, Resource, fields
 from flask import Flask, request
 api = Namespace('EC2', description='Api\'s to interact with AWS EC2')
-
+from .firestore import db
 import boto3
 import json
 import logging
@@ -46,10 +46,13 @@ userdatadict={"Docker":docker_script,"Nginx":nginx_script,"Jenkins":jenkins_scri
 
 @api.route('/instances')    
 class Instances(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def get(self):
         """
         Get all the instances
         """
+        profile = request.args.get("profile")
+        ec2=boto3.client('ec2', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         serverdict={}
         serverlist=[]
         count=0
@@ -68,10 +71,13 @@ class Instances(Resource):
         return {"servers":serverlist}
 
     @api.doc(params={'os': 'Operating System','instance_type': 'Instance Type','count': 'No of Instances','keyname': 'Keypair Name','app': 'Application name'})
+    @api.doc(params={'profile': 'profile_name'})
     def post(self):
         """
         Create instance
         """
+        profile = request.args.get("profile")
+        ec2=boto3.client('ec2', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         os = request.args.get("os")
         instance_type = request.args.get("instance_type")
         count = request.args.get("count")
@@ -86,19 +92,25 @@ class Instances(Resource):
 @api.route('/instances/<string:instance_id>')
 
 class InstanceOps(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def delete(self,instance_id):
         """
         Terminate the instances
         """
+        profile = request.args.get("profile")
+        ec2=boto3.client('ec2', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         ec2.terminate_instances(InstanceIds=[str(instance_id)])
         return "Server terminated"
 
 @api.route('/instances/<string:instance_id>/<string:running_state>')  
-class InstanceStartStop(Resource):     
+class InstanceStartStop(Resource):   
+    @api.doc(params={'profile': 'profile_name'})  
     def post(self,instance_id,running_state):
         """
         Start or Stop a server 
         """
+        profile = request.args.get("profile")
+        ec2=boto3.client('ec2', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         if(str(running_state)=="running"):
             ec2.start_instances(InstanceIds=[
             str(instance_id)
@@ -114,10 +126,13 @@ class InstanceStartStop(Resource):
 
 @api.route('/keypairs')
 class Keypair(Resource):
+    @api.doc(params={'profile': 'profile_name'})
     def get(self):
         """
         Get all the keypairs in this region
         """    
+        profile = request.args.get("profile")
+        ec2=boto3.client('ec2', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         keypairdict={}
         keypairlist=[]
         keypairs=ec2.describe_key_pairs()

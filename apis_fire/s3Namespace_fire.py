@@ -22,7 +22,7 @@ class Buckets(Resource):
         Get all the buckets
         """
         profile = request.args.get("profile")
-        s3=boto3.client('s3', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        s3=boto3.client('s3', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         buckets=s3.list_buckets()
         bucketlist=[]
         for i in buckets['Buckets']:
@@ -39,7 +39,7 @@ class Objects(Resource):
         Get all the objects in all buckets
         """
         profile = request.args.get("profile")
-        s3=boto3.client('s3', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        s3=boto3.client('s3', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         buckets=s3.list_buckets()
         bucketlist=[]
     
@@ -68,7 +68,7 @@ class BucketsOps(Resource):
         Create a bucket
         """
         profile = request.args.get("profile")
-        s3=boto3.client('s3', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        s3=boto3.client('s3', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         s3.create_bucket(Bucket=str(bucket_name), CreateBucketConfiguration={'LocationConstraint': 'ap-south-1'})
         return "bucket created successfully"
     @api.doc(params={'profile': 'profile_name'})    
@@ -77,7 +77,7 @@ class BucketsOps(Resource):
         Delete a bucket
         """
         profile = request.args.get("profile")
-        s3=boto3.client('s3', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        s3=boto3.client('s3', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         s3.delete_bucket(Bucket=str(bucket_name))
         return "bucket "+ bucket_name + " deleted successfully"
 
@@ -89,7 +89,7 @@ class ObjectsOps(Resource):
         Get all the objects in given bucket
         """
         profile = request.args.get("profile")
-        s3=boto3.client('s3', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        s3=boto3.client('s3', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         objectlist=[]
         objects=s3.list_objects_v2(Bucket=str(bucket_name))
         print(objects)

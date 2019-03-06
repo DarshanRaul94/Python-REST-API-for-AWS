@@ -17,7 +17,7 @@ class Users(Resource):
         Get all the Users in your account
         """ 
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         userdict={}
         count=0
         users=iam.list_users()
@@ -39,7 +39,7 @@ class UserOps(Resource):
         Create an User in your account
         """ 
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.create_user(UserName=str(user_name))
         return "User "+user_name+" created"
     @api.doc(params={'profile': 'profile_name'})
@@ -48,7 +48,7 @@ class UserOps(Resource):
         Delete an User in your account
         """
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.delete_user(
         UserName=str(user_name)
         )
@@ -62,7 +62,7 @@ class Groups(Resource):
         Get all the groups in your account
         """ 
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         groups=iam.list_groups()
         grouplist=[]
         
@@ -82,7 +82,7 @@ class GroupOps(Resource):
         Create a Group in your account
         """
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.create_group(GroupName=str(group_name))
         return "Group"+group_name+" created"
     @api.doc(params={'profile': 'profile_name'})
@@ -91,7 +91,7 @@ class GroupOps(Resource):
         Get the group details
         """
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         group_details=iam.get_group(
          GroupName=str(group_name)
         )
@@ -102,7 +102,7 @@ class GroupOps(Resource):
         Delete an group in your account
         """
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.delete_group(
         GroupName=str(group_name)
         )
@@ -115,7 +115,7 @@ class GroupsUsers(Resource):
         Add an user to a Group 
         """
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         iam.add_user_to_group(
         GroupName=str(group_name),
         UserName=str(user_name)
@@ -130,7 +130,7 @@ class Roles(Resource):
         Get all the roles in your account
         """
         profile = request.args.get("profile")
-        iam=boto3.client('iam', region_name='ap-south-1', aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+        iam=boto3.client('iam', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         roles=iam.list_roles()
         roleslist=[]
         
