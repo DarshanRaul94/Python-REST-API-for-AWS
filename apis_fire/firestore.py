@@ -7,7 +7,7 @@ config = {
   'authDomain': 'awsapi.firebaseapp.com',
   'databaseURL': 'https://awsapi.firebaseio.com',
   'storageBucket': 'awsapi.appspot.com',
-  'serviceAccount': str(os.getcwd())+'\/awsapi.json'
+  'serviceAccount': str(os.getcwd())+'/awsapi.json'
 
 }
 
