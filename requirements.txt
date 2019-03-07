@@ -2,3 +2,4 @@ flask-restplus
 boto3
 Flask
 Flask-Cors
+pyrebase

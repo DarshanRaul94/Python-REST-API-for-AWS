@@ -1,5 +1,5 @@
 from flask_restplus import Namespace, Resource, fields
-from pymongo import MongoClient
+
 from flask import Flask, request
 from .firestore import db
 

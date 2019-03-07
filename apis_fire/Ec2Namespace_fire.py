@@ -5,7 +5,7 @@ from .firestore import db
 import boto3
 import json
 import logging
-ec2 = boto3.client('ec2')
+#ec2 = boto3.client('ec2')
 
 docker_script ="""#!/bin/bash
 sudo apt update
