@@ -3,10 +3,11 @@ import os
 
 
 config = {
- 'apiKey': 'AIzaSyBWI48BhuBdKNQJsgeI3DmU8VKytGkvcsk',
-  'authDomain': 'awsapi.firebaseapp.com',
-  'databaseURL': 'https://awsapi.firebaseio.com',
-  'storageBucket': 'awsapi.appspot.com',
+ 'apiKey': "AIzaSyC7jpBh3CfdpBKUZvpuU7rfH0DvOiEQhDQ",
+    'authDomain': "awsapp-6bf1a.firebaseapp.com",
+    'databaseURL': "https://awsapp-6bf1a.firebaseio.com",
+    'projectId': "awsapp-6bf1a",
+    'storageBucket': "awsapp-6bf1a.appspot.com",
   'serviceAccount': str(os.getcwd())+'/awsapi.json'
 
 }
