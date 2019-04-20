@@ -1,7 +1,7 @@
 import pyrebase  ############package for interacting with firebase realtime database
 import os  ############### to get
 
-
+################setup configuration for the app
 config = {
  'apiKey': "<apikey>",
     'authDomain': "awsapp-6bf1a.firebaseapp.com",
@@ -14,4 +14,4 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 
-db = firebase.database()
+db = firebase.database() ########## initialize the db
