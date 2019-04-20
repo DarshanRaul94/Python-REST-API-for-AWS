@@ -1,19 +1,20 @@
 from flask_restplus import Namespace, Resource, fields
 
 from flask import Flask, request
-from .firestore import db
+from .firestore import db   ##########import the firebase database
 
 api = Namespace('S3', description='Api\'s to interact with AWS S3')
 
 import boto3
 import json
 import logging
-#s3=boto3.client('s3')
+#s3=boto3.client('s3')  
 #users = db.child('profiles').child('madhavi').get()
 
 
 #s3=boto3.client('s3', region_name='ap-south-1', aws_access_key_id=str(users.val()['access_key']), aws_secret_access_key=str(users.val()['secret_access_key']))
 
+########
 @api.route('/buckets')  
 class Buckets(Resource):
     @api.doc(params={'profile': 'profile_name'})
