@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
 
-  
+  ############## Elastic Search ##############
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.7.0
     container_name: elasticsearch
@@ -11,7 +11,8 @@ services:
       - my-network-name
     ports:
       - 9200:9200
-
+  
+  #################### KIBANA ####################
   kibana:
     image: docker.elastic.co/kibana/kibana:6.7.0
     container_name: kibana
@@ -24,7 +25,7 @@ services:
       - my-network-name
     depends_on:
       - elasticsearch
-
+  ##########################  NGINX  ################
   nginx: 
     image: nginx:latest
     container_name: production_nginx
