@@ -1,9 +1,9 @@
 from flask import Flask
-from apis_fire import api
+from apis_fire import api  #####import the api module from firebase model
 ###from apis import api### use this for normal operations
-from flask_cors import CORS
+from flask_cors import CORS ############import the CORS package
 app = Flask(__name__)
-CORS(app)
+CORS(app)   ######### enable CORS (Cross origin resource sharing)
 api.init_app(app)
 
 app.run(debug=True,host='0.0.0.0', port=8080)
