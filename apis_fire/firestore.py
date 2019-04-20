@@ -1,9 +1,9 @@
-import pyrebase
-import os
+import pyrebase  ############package for interacting with firebase realtime database
+import os  ############### to get
 
 
 config = {
- 'apiKey': "AIzaSyC7jpBh3CfdpBKUZvpuU7rfH0DvOiEQhDQ",
+ 'apiKey': "<apikey>",
     'authDomain': "awsapp-6bf1a.firebaseapp.com",
     'databaseURL': "https://awsapp-6bf1a.firebaseio.com",
     'projectId': "awsapp-6bf1a",
