@@ -5,7 +5,7 @@ import os
 import boto3
 import json
 import logging
-from .firestore import db
+from .firestore import db ##########import the firebase database
 #iam = boto3.client('iam')
 
 
