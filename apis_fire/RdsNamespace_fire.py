@@ -1,7 +1,7 @@
 from flask_restplus import Namespace, Resource, fields
 
 from flask import Flask, request
-from .firestore import db
+from .firestore import db ##########import the firebase database
 
 api = Namespace('Rds', description='Api\'s to interact with AWS RDS')
 
