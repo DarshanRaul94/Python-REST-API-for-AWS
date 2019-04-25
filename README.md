@@ -52,3 +52,13 @@ You should get similar output:
 use -d if you want to run in detached mode
 
 ```docker run -it -d -p 8080:8080 <image-name>```
+
+
+# TODO
+
+- [ ] Add VPC Namespace
+- [ ] Comment all the codes
+- [ ] Add nginx to docker compose to create https reverse proxy
+- [ ] Add API keys or oauth for added security 
+
+
