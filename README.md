@@ -58,6 +58,7 @@ use -d if you want to run in detached mode
 
 - [ ] Add VPC Namespace
 - [ ] Comment all the codes
+- [ ] Add pytest framework to create test scenarios for the API
 - [ ] Add nginx to docker compose to create https reverse proxy
 - [ ] Add API keys or oauth for added security 
 
