@@ -61,5 +61,6 @@ use -d if you want to run in detached mode
 - [ ] Add pytest framework to create test scenarios for the API
 - [ ] Add nginx to docker compose to create https reverse proxy
 - [ ] Add API keys or oauth for added security 
+- [ ] Use logging module to create log file in append mode
 
 
