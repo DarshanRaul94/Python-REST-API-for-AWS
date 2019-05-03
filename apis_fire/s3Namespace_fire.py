@@ -2,7 +2,7 @@ from flask_restplus import Namespace, Resource, fields
 
 from flask import Flask, request
 from .firestore import db   ##########import the firebase database
-
+from .logs import info
 api = Namespace('S3', description='Api\'s to interact with AWS S3')
 
 import boto3
@@ -30,6 +30,8 @@ class Buckets(Resource):
             bucket= i['Name']
             bucketlist.append(bucket)
         print(bucketlist)
+        
+        info("Buckets viewed")
         return {"buckets":bucketlist}
         
 @api.route('/objects')
