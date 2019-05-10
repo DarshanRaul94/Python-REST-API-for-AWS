@@ -1,12 +1,17 @@
 from flask_restplus import Namespace, Resource, fields
 from flask import Flask, request
-api = Namespace('IAM', description='Api\'s to interact with AWS IAM')
+
 import os
 import boto3
 import json
 import logging
-from .firestore import db ##########import the firebase database
-#iam = boto3.client('iam')
+
+## initializing the namespace here
+api = Namespace('IAM', description='Api\'s to interact with AWS IAM')
+    
+## import the firebase database
+from .firestore import db 
+
 
 
 @api.route('/users')    

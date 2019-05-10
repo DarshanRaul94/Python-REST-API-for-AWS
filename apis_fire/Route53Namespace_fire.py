@@ -1,16 +1,21 @@
 from flask_restplus import Namespace, Resource, fields
 
 from flask import Flask, request
-from .firestore import db##########import the firebase database
 
-api = Namespace('Route53', description='Api\'s to interact with AWS Route53')
+
+
 
 import boto3
 import json
 import logging
-#s3=boto3.client('s3')
-#users = db.child('profiles').child('madhavi').get()
-#route53=boto3.client('route53', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
+
+
+## initializing the namespace here
+api = Namespace('Route53', description='Api\'s to interact with AWS Route53')
+
+
+## import the firebase database
+from .firestore import db
 
 
 @api.route('/healthchecks')  

@@ -1,17 +1,20 @@
 from flask_restplus import Namespace, Resource, fields
 
 from flask import Flask, request
-from .firestore import db ##########import the firebase database
 
-api = Namespace('Rds', description='Api\'s to interact with AWS RDS')
+
+
 
 import boto3
 import json
 import logging
-#s3=boto3.client('s3')
-#users = db.child('profiles').child('madhavi').get()
-#rds=boto3.client('rds', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
 
+## initializing the namespace here
+api = Namespace('Rds', description='Api\'s to interact with AWS RDS')
+
+
+## import the firebase database
+from .firestore import db
 
 @api.route('/healthchecks')  
 class HealthChecks(Resource):

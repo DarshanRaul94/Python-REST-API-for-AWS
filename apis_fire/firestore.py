@@ -14,4 +14,5 @@ config = {
 
 firebase = pyrebase.initialize_app(config)
 
-db = firebase.database() ########## initialize the db
+########## initialize the db
+db = firebase.database() 

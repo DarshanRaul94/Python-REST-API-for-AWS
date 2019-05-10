@@ -1,12 +1,19 @@
 from flask_restplus import Namespace, Resource, fields
 from flask import Flask, request
-api = Namespace('EC2', description='Api\'s to interact with AWS EC2')
-from .firestore import db
+
+
 import boto3
 import json
 import logging
-#ec2 = boto3.client('ec2')
 
+
+## initializing the namespace here
+api = Namespace('EC2', description='Api\'s to interact with AWS EC2')
+
+## import the firebase database
+from .firestore import db
+
+### user data script's to install applications
 docker_script ="""#!/bin/bash
 sudo apt update
 sudo apt install -y docker.io
@@ -41,7 +48,9 @@ sudo apt install -y docker-compose
 docker run -i -t -d -p 80:3000 maccam912/meanjs 
 """
 
+## matching os to ami id
 osdict={"Amazon_Linux":"ami-0937dcc711d38ef3f","Ubuntu":"ami-0d773a3b7bb2bb1c1","Red Hat Enterprise Linux 7.5":"ami-5b673c34"}
+## matching application's to user data scripts
 userdatadict={"Docker":docker_script,"Nginx":nginx_script,"Jenkins":jenkins_script,"Elk":elk_script,"Mean":mean_script}
 
 @api.route('/instances')    
