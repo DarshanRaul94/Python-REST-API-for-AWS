@@ -1,21 +1,22 @@
 # Steps
-######Make sure that the instance has atleast 4gb ram as just elasticsearch takes 2 gb ram ##jai free tier 
+**Make sure that the instance has atleast 4gb ram as just elasticsearch takes 2 gb ram **
+
 1) my image which we will use to generate logs:
  darshanraul/awsapi:latest
  
- -you can run using: docker run -it -p 8080:8080 darshanraul/awsapi:latest (can use -d if u want it detached)
+- you can run using: docker run -it -p 8080:8080 darshanraul/awsapi:latest (can use -d if u want it detached)
  
--It runs on 8080:8080 port so make sure thats open in security group/firewall
+- It runs on 8080:8080 port so make sure thats open in security group/firewall
  
  
 2) all the logs generated will be stored here: This include all the Elastic stack containers too( /var/lib/docker/containers/*/*.log  )
 
 
-###I used this :https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-docker.html for reference so feel free to refer it whenever u face issues , its very well documented
-###Iam using the latest official docker images here as 7.00 is still in beta
+- I used this :https://www.elastic.co/guide/en/elastic-stack-get-started/current/get-started-docker.html for reference so feel free to refer it whenever u face issues , its very well documented
+- Iam using the latest official docker images here as 7.00 is still in beta
 
 
-3)######################ELASTIC SEARCH###############
+### ELASTIC SEARCH
 
 docker run -it -d -p 9200:9200 -p 9300:9300 -h elasticsearch --name elasticsearch docker.elastic.co/elasticsearch/elasticsearch:6.7.0
 	#h is for hostname which we will use later others are the usual port,name ones >>https://docs.docker.com/engine/reference/commandline/run/
@@ -43,7 +44,7 @@ root@docker-ubuntu-1:~# curl http://localhost:9200
 
 -you should get similar response
 
-5)############KIBANA#################
+### KIBANA
 
 docker run -it -d -p 5601:5601 --link elasticsearch:elasticsearch   -h kibana --name kibana docker.elastic.co/kibana/kibana:6.7.0
 
@@ -54,7 +55,7 @@ docker run -it -d -p 5601:5601 --link elasticsearch:elasticsearch   -h kibana --
 -You should be able to see the kibana dashboard
 
 
-6) ##################LOGSTASH#######################
+### LOGSTASH
 
 -choose or create a directory..name it as per ur wish.. cd to it
 
