@@ -11,4 +11,4 @@
 
 - name: Install all dependencies
   pip:
-    requirements: {{project_location}}/requirements.txt
+    requirements: "{{project_location}}/requirements.txt"
