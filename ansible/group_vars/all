@@ -1,3 +1,5 @@
 ---
+
+##### for the gitclone role
 project_repo: https://github.com/darshan-raul/Python-REST-API-for-AWS.git
-project_location: /root/gitproject
+project_location: /tmp/gitproject
