@@ -1,10 +1,12 @@
 ---
-- name: Install WordPress, MySQL, Nginx, and PHP-FPM
+### Referred the structure in https://github.com/ansible/ansible-examples/tree/master/wordpress-nginx for base skeleton and then built on it
+- name: Running python REST API on ubuntu server
   hosts: localhost
   remote_user: root
-  # remote_user: user
   # become: yes
   # become_method: sudo
 
   roles:
-    - test
+    - gitclone
+    - install_dependencies
+    - runapp
