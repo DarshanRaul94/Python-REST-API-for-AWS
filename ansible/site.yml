@@ -1,6 +1,6 @@
 ---
 ### Referred the structure in https://github.com/ansible/ansible-examples/tree/master/wordpress-nginx for base skeleton and then built on it
-
+##https://github.com/yankurniawan/ansible-for-aws
 - name: Creating AWS architecture
   hosts: localhost
   gather_facts: False
@@ -8,7 +8,7 @@
   - aws
   roles:
     - create_vpc
-#    - create_subnets
+#   - create_subnets
 #    - create_security_groups
 #    - create_instances
 

@@ -6,3 +6,16 @@
     region: "{{region}}"
     tags:
       type: primary
+  register: primary_vpc
+
+
+
+- name: Create subnet for database servers
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ primary_vpc.vpc.id }}"
+    cidr: "10.10.0.0/28"
+    region: "{{region}}"
+    resource_tags:
+      Name: Public_Subnet
+  register: database_subnet 

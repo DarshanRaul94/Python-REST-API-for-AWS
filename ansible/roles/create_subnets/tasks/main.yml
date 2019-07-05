@@ -1,0 +1,8 @@
+---
+- name: create a VPC with dedicated tenancy and a couple of tags
+  ec2_vpc_net:
+    name: test_vpc
+    cidr_block: "{{vpc_cidr}}"
+    region: "{{region}}"
+    tags:
+      type: primary
