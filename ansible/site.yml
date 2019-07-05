@@ -1,11 +1,29 @@
 ---
 ### Referred the structure in https://github.com/ansible/ansible-examples/tree/master/wordpress-nginx for base skeleton and then built on it
+
+- name: Creating AWS architecture
+  hosts: localhost
+  gather_facts: False
+  tags:
+  - aws
+  roles:
+    - create_vpc
+#    - create_subnets
+#    - create_security_groups
+#    - create_instances
+
+
+
+
+
+
 - name: Running python REST API on ubuntu server
   hosts: localhost
   remote_user: root
   # become: yes
   # become_method: sudo
-
+  tags:
+  - ubuntuconfig  
   roles:
     - gitclone
     - install_dependencies
