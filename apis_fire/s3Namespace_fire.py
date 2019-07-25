@@ -45,6 +45,10 @@ class Objects(Resource):
         profile = request.args.get("profile")
         s3=boto3.client('s3', region_name=str(db.child('profiles').child(str(profile)).get().val()['region']), aws_access_key_id=str(db.child('profiles').child(str(profile)).get().val()['access_key']), aws_secret_access_key=str(db.child('profiles').child(str(profile)).get().val()['secret_access_key']))
         buckets=s3.list_buckets()
+        try:
+            buckets=s3.list_buckets()
+        except botocore.exceptions.ClientError as e:
+            print(e)
         bucketlist=[]
     
         objectdict={}
