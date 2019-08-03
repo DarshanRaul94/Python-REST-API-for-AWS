@@ -1,13 +1,15 @@
 version: '2'
-
+  
 services:
     reverseproxy:
         image: nginx:alpine
         ports:
             - 80:80
+            - 443:443
         volumes:
           - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-
+          - ./nginx/awsapi.com.crt:/etc/nginx/awsapi.com.crt # New Line!
+          - ./nginx/awsapi.com.key:/etc/nginx/awsapi.com.key # New Line!
         restart: always
 
     awsapi:
@@ -15,3 +17,4 @@ services:
             - reverseproxy
         image: darshanraul/awsapi
         restart: always
+~                             
