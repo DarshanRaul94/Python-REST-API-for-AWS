@@ -17,4 +17,38 @@ services:
             - reverseproxy
         image: darshanraul/awsapi
         restart: always
-~                             
+
+
+
+
+version: '3'
+  
+services:
+    reverseproxy:
+        image: nginx:alpine
+        #container_name: reverseproxy
+        ports:
+            - 80:80
+            - 443:443
+        deploy:
+          replicas: 4
+        volumes:
+          - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        networks:
+          - aws_network
+
+        restart: always
+
+    awsapi:
+        depends_on:
+            - reverseproxy
+        #container_name: awsapi
+        image: darshanraul/awsapi
+        deploy:
+          replicas: 4
+        restart: always
+        networks:
+          - aws_network
+
+networks:
+  aws_network:
