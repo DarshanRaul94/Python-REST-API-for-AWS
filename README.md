@@ -64,3 +64,9 @@ use -d if you want to run in detached mode
 - [ ] Use logging module to create log file in append mode
 
 
+## REFERENCES:
+
+- https://www.johnmackenzie.co.uk/post/creating-self-signed-ssl-certificates-for-docker-and-nginx/
+- https://www.thepolyglotdeveloper.com/2017/03/nginx-reverse-proxy-containerized-docker-applications/
+- https://dev.to/domysee/setting-up-a-reverse-proxy-with-nginx-and-docker-compose-29jg
+

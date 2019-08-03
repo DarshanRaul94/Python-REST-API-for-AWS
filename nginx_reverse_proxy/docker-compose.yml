@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+    reverseproxy:
+        image: nginx:alpine
+        ports:
+            - 80:80
+        volumes:
+          - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+        restart: always
+
+    awsapi:
+        depends_on:
+            - reverseproxy
+        image: darshanraul/awsapi
+        restart: always
